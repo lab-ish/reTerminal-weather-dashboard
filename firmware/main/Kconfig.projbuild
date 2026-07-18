@@ -1,0 +1,15 @@
+menu "reTerminal Weather"
+
+    config WIFI_SSID
+        string "Wi-Fi SSID"
+        default ""
+        help
+            接続先 Wi-Fi の SSID。
+
+    config WIFI_PASSWORD
+        string "Wi-Fi password"
+        default ""
+        help
+            接続先 Wi-Fi のパスワード（WPA2-PSK）。
+
+endmenu

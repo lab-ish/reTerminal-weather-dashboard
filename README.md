@@ -51,12 +51,35 @@ python -m cloud.generate --out ./out
 ## デバイス側（ファーム）
 
 ```bash
+# Wi-Fi 認証情報を設定（初回のみ）
+docker run --rm -v "$PWD/firmware":/project -w /project \
+  espressif/idf:release-v6.1 idf.py menuconfig   # reTerminal Weather → SSID/Password
+# ビルド
 docker run --rm -v "$PWD/firmware":/project -w /project \
   espressif/idf:release-v6.1 idf.py build
 ```
 
-コンポーネント: `wifi_conn` `time_sync` `battery` `http_fetch` `epd_ed2208`
-`framebuffer` `battery_overlay` `power_mgr`（M0 はスタブ、M4〜M7 で本実装）。
+コンポーネント: `board_cfg`(ピン/パレット/URL 定数) `wifi_conn`(STA+RTC高速再接続)
+`time_sync`(SNTP+JST) `battery`(ADC+×2.0+LiPo曲線) `http_fetch`(HTTPS+crt_bundle,
+manifest軽量パース) `epd_ed2208`(SPIドライバ) `framebuffer`(PSRAM 4bpp) `battery_overlay`
+(予約矩形へ%+5段階アイコン直書き) `power_mgr`(8時刻起床+deep sleep)。起床フローは
+`main/main.c`。
+
+### ホスト単体テスト（実機不要）
+
+ESP-IDF非依存の純ロジック（`fb_pixels` `battery_calc` `power_calc` `battery_overlay`）を
+ホストの C コンパイラで検証する。
+
+```bash
+cd firmware
+cc -std=c11 -I components/board_cfg/include -I components/framebuffer/include \
+   -I components/battery/include -I components/power_mgr/include \
+   -I components/battery_overlay/include \
+   test/test_host.c components/framebuffer/fb_pixels.c \
+   components/battery/battery_calc.c components/power_mgr/power_calc.c \
+   components/battery_overlay/battery_overlay.c -o /tmp/test_host && /tmp/test_host
+# バッテリ%/段数・次回起床秒・ニブル操作を検証し /tmp/overlay_test.bin を出力
+```
 
 ## 更新スケジュール
 
@@ -73,12 +96,16 @@ docker run --rm -v "$PWD/firmware":/project -w /project \
 | M1 | データ層（fetch + merge） | ✅ |
 | M2 | レイアウト＆ディザ（palette/background/layout/icons） | ✅ |
 | M3 | パック＆配信（encode + manifest + workflow/cron） | ✅ |
-| M4 | e-paperドライバ（Seeed_GxEPD2 → C移植） | ⬜ |
-| M5 | ネットワーク＆展開（wifi/http/framebuffer） | ⬜ |
-| M6 | バッテリ＆オーバレイ | ⬜ |
-| M7 | 電源管理（time_sync/power_mgr/8時刻起床） | ⬜ |
-| M8 | 実機検証（オーナーと共同） | ⬜ |
+| M4 | e-paperドライバ（Seeed_GxEPD2 → C移植） | ✅ 実装・ビルド（実点灯はM8） |
+| M5 | ネットワーク＆展開（wifi/http/framebuffer） | ✅ 実装・ビルド |
+| M6 | バッテリ＆オーバレイ | ✅ 実装・ビルド・ホスト検証 |
+| M7 | 電源管理（time_sync/power_mgr/8時刻起床） | ✅ 実装・ビルド・ホスト検証 |
+| M8 | 実機検証（オーナーと共同） | ⬜ 実機必須 |
 | M9 | 仕上げ | ⬜ |
+
+M4〜M7 は docker `idf.py build` で全体リンク成功（アプリ 1.05MB, パーティション50%空き）、
+純ロジックはホスト単体テスト全パス。**実際のパネル点灯・Wi-Fi/HTTPS実通信・ADC実測・
+deep sleep実測・6色の色再現は M8（実機・オーナーと共同）で確認する。**
 
 ## 実機セットアップ（M5 以降）
 
