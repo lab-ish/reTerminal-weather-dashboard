@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+cloud/cache/
+
+# 生成物（配信は GitHub Actions が行う）
+out/
+*.bin
+!firmware/**/*.bin
+
+# ESP-IDF ビルド成果物
+firmware/build/
+firmware/sdkconfig
+firmware/sdkconfig.old
+firmware/managed_components/
+firmware/dependencies.lock
+
+# OS/エディタ
+.DS_Store

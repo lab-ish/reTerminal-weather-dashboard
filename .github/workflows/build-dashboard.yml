@@ -1,0 +1,61 @@
+name: build-dashboard
+
+# 元データ:30更新 → +15分で Actions（cron遅延を見て安全側 :40 に前倒し）
+# UTC 40 2,5,8,11,14,17,20,23 = JST 11:40,14:40,17:40,20:40,23:40,02:40,05:40,08:40
+# → デバイスは各 JST 12,15,18,21,00,03,06,09:00 に取得して表示更新（8回/日）
+on:
+  schedule:
+    - cron: "40 2,5,8,11,14,17,20,23 * * *"
+  workflow_dispatch: {}   # 手動テスト用
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 実行が重ならないように直列化（進行中があれば新しい方を優先）
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: cloud/requirements.txt
+
+      - name: Install deps
+        run: pip install -r cloud/requirements.txt
+
+      - name: Generate dashboard
+        run: python -m cloud.generate --out ./out
+
+      - name: Verify outputs
+        run: |
+          test -f out/dashboard.bin
+          test -f out/manifest.json
+          bytes=$(wc -c < out/dashboard.bin)
+          echo "dashboard.bin = ${bytes} bytes"
+          test "${bytes}" -eq 192000
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
