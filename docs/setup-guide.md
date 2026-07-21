@@ -89,7 +89,7 @@ github actionsのcron設定は実行時刻が大きくバラつくため、 [cro
 Wi-Fi の SSID／パスワードは ESP-IDF の menuconfig で入力する（`secrets.h` や `.env` は無い）。
 
 ```bash
-docker run --rm -v "$PWD/firmware":/project -w /project \
+docker run --rm -it -v "$PWD/firmware":/project -w /project \
   espressif/idf:release-v6.1 idf.py menuconfig
 # メニュー「reTerminal Weather」→ Wi-Fi SSID / Wi-Fi password を入力
 ```
@@ -123,9 +123,20 @@ idf.py -p <PORT> flash monitor
 - `<PORT>` はシリアルポート。macOS は `/dev/cu.usbserial-*`、Linux は `/dev/ttyACM0` /
   `/dev/ttyUSB0` 等。
 - **Docker でビルドした場合**、フラッシュにはシリアルデバイスをコンテナへ渡す必要がある
-  （`--device` オプション）。ホストに ESP-IDF もしくは `esptool` を入れて書き込む方が確実。
-- 代替: `esptool` で `firmware/build/merged.bin` を直接書き込む方法もある（同梱の
-  `.venv-esptool/` に `esptool` 一式を用意している）。
+  （`--device` オプション）。ホストに ESP-IDF もしくは `esptool` を入れて書き込む方が確実（macOSではdocker経由の書き込みは動作しないという報告あり）。
+- 代替: `esptool` で `firmware/build/merged.bin` を直接書き込む方法もある。
+  - venvで導入 `esptool`をインストール
+```bash
+cd firmware
+python3 -m venv .venv
+source .venv/bin/activate
+pip install esptool
+```
+  - `esptool` を使って書き込み
+```bash
+cd build
+esptool --chip esp32s3 --port /dev/cu.usbserial-xxxxx --baud 460800 write-flash @flash_args
+```
 
 ## 7. 動作確認
 
