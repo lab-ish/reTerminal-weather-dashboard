@@ -135,21 +135,29 @@ def _draw_weekly(d: ImageDraw.ImageDraw, wd: WeatherData) -> None:
         # アイコン
         icon_s = 58
         icons.draw_icon(d, day.weather_code, cx + (cw - icon_s) / 2,
-                        top + hh + 26, icon_s)
+                        top + hh + 28, icon_s)
         # 最高/最低気温（赤/青）
-        ty = top + hh + 92
+        ty = top + hh + 100
         _text(d, (cx + cw * 0.30, ty), f"{day.temp_max:.0f}",
               _bold(config.FS_CARD_TEMP), palette.C_RED, anchor="ma")
         _text(d, (cx + cw * 0.70, ty), f"{day.temp_min:.0f}",
               _bold(config.FS_CARD_TEMP), palette.C_BLUE, anchor="ma")
         # 降水確率（青い水滴 + %）
-        py = ty + 34
+        py = ty + 22
         pop = "--" if day.precip_prob is None else f"{day.precip_prob}"
-        d.ellipse((cx + cw * 0.16 - 6, py + 2, cx + cw * 0.16 + 6, py + 16),
-                  fill=palette.C_BLUE)
-        _text(d, (cx + cw * 0.30, py), f"{pop}%",
-              _reg(config.FS_CARD_POP), palette.C_BLACK, anchor="la")
-
+        d.chord((cx + 14, py + 12, cx + 34, py + 32), start=180, end=0, outline=palette.C_BLACK)
+        d.line((cx + 24, py + 22, cx + 24, py + 32), fill=palette.C_BLACK)
+        d.arc((cx + 18, py + 29, cx + 24, py + 35), start=0, end=180, fill=palette.C_BLACK)
+        _text(d, (cx + cw * 0.95, py + 22), f"{pop} %",
+              _reg(config.FS_CARD_POP), palette.C_BLACK, anchor="rm")
+        # 最大風速
+        wy = py + 40
+        d.line((cx + 6, wy + 12, cx + 26, wy + 12), fill="black", width=1)
+        d.arc((cx + 22, wy + 4, cx + 30, wy + 12), start=180, end=90, fill="black")
+        d.line((cx + 9, wy + 15, cx + 29, wy + 15), fill="black", width=1)
+        d.arc((cx + 25, wy + 15, cx + 33, wy + 23), start=270, end=180, fill="black")
+        _text(d, (cx + cw * 0.95, wy + 12), f"{day.wind_speed_max:.0f} m/s",
+              _reg(config.FS_CARD_POP), palette.C_BLACK, anchor="rm")
 
 def _draw_footer(d: ImageDraw.ImageDraw) -> None:
     # クレジット（左）: 背景の明暗に依らず読めるよう黒縁取り

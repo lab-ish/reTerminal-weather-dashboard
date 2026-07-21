@@ -32,8 +32,9 @@ JMA_PARAMS = {
     "longitude": LONGITUDE,
     "current": "temperature_2m,apparent_temperature,relative_humidity_2m,"
     "weather_code,wind_speed_10m,precipitation",
-    "daily": "weather_code,temperature_2m_max,temperature_2m_min",
+    "daily": "weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max",
     "timezone": TIMEZONE,
+    "wind_speed_unit": "ms",
     "forecast_days": FORECAST_DAYS,
 }
 

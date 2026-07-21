@@ -26,6 +26,7 @@ class DailyForecast:
     weather_code: int        # WMO weather code
     temp_max: float          # 最高気温 [°C]
     temp_min: float          # 最低気温 [°C]
+    wind_speed_max: float    # 最大風速 [m/s]
     precip_prob: int | None  # 降水確率 [%]（/v1/forecast 由来, 欠測時 None）
 
 
