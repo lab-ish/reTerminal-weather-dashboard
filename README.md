@@ -108,3 +108,9 @@ manifest軽量パース) `epd_ed2208`(SPIドライバ) `framebuffer`(PSRAM 4bpp)
 This software is released under the BSD 3-clause license. See `LICENSE.txt`.
 
 * Copyright (c) 2026, Shigemi ISHIDA
+
+## Third-Party Fonts
+
+This software bundles the DejaVu Sans font (https://dejavu-fonts.github.io/).
+DejaVu Sans is released under its own license, which includes portions copyrighted by Bitstream, Inc. (Bitstream Vera Fonts) and Tavmjong Bah (Arev Fonts glyphs), with DejaVu's own modifications dedicated to the public domain.
+See `DejaVu-LICENSE.txt` for the full license text.
