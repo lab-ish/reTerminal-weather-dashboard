@@ -21,3 +21,7 @@ CONFIG_MBEDTLS_CERTIFICATE_BUNDLE_DEFAULT_FULL=y
 
 # 低消費電力: deep sleep 前提。ログは M8 実機調整で絞る
 CONFIG_LOG_DEFAULT_LEVEL_INFO=y
+
+# main タスクで HTTPS(mbedTLS + 証明書バンドル) を実行するため既定 3584B では
+# スタックオーバーフローする。M8 実機で確認し 12KB へ拡大。
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=12288
