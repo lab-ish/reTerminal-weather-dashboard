@@ -59,7 +59,7 @@ python -m cloud.generate --out ./out
 
 1. リポジトリを自分の GitHub アカウントへ置く（fork または push）。
 2. **Settings → Pages → Source: GitHub Actions** を選択して有効化。
-3. 以後、cron（1日8回）で自動生成・配信される。手動実行は Actions の
+3. 手動実行は Actions の
    `workflow_dispatch`（`build-dashboard.yml`）から行える。
 
 公開 URL は次の形になる（`<owner>` / `<repo>` は自分の値）。
@@ -68,6 +68,9 @@ python -m cloud.generate --out ./out
 https://<owner>.github.io/<repo>/manifest.json
 https://<owner>.github.io/<repo>/dashboard.bin
 ```
+
+github actionsのcron設定は実行時刻が大きくバラつくため、 [cron-job.org](https://cron-job.org/) などを用いて `workflow_dispatch`（`build-dashboard.yml`）を外部サービス経由でdispatchすると良い。
+[cron-job-guide.md](cron-job-guide.md) に設定方法の概略を示した。
 
 ## 4. ファーム設定
 

@@ -89,10 +89,11 @@ manifest軽量パース) `epd_ed2208`(SPIドライバ) `framebuffer`(PSRAM 4bpp)
 
 ## 更新スケジュール
 
-元データ:30更新 → +15分で Actions（cron遅延を見て安全側 :40）→ +15分でデバイス取得。
+元データ:30更新 → +10分で Actionsを実行すると良い（デフォルトでは無効化されている）。
+デバイスでは:00に取得。
 
-- デバイス表示更新（JST）: 12:00, 15:00, 18:00, 21:00, 00:00, 03:00, 06:00, 09:00
-- Actions cron（UTC）: `40 2,5,8,11,14,17,20,23 * * *`（＋ `workflow_dispatch` 手動）
+Github Actionsをcron実行すると実行時刻が大きくバラつくため、 [cron-job.org](https://cron-job.org/) などの利用を推奨する。
+設定方法は [docs/cron-job-guide.md](docs/cron-job-guide.md) を参照。
 
 > スケジュールと時刻表示は JST 前提で設計されている。海外地点で使う場合は時刻運用に注意。
 
