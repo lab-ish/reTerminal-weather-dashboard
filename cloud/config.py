@@ -31,9 +31,10 @@ JMA_PARAMS = {
     "latitude": LATITUDE,
     "longitude": LONGITUDE,
     "current": "temperature_2m,apparent_temperature,relative_humidity_2m,"
-    "weather_code,wind_speed_10m",
-    "daily": "weather_code,temperature_2m_max,temperature_2m_min",
+    "weather_code,wind_speed_10m,precipitation",
+    "daily": "weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max",
     "timezone": TIMEZONE,
+    "wind_speed_unit": "ms",
     "forecast_days": FORECAST_DAYS,
 }
 
@@ -76,7 +77,7 @@ MARGIN = 12
 CURRENT_BOX = (MARGIN, 44, WIDTH - 2 * MARGIN, 156)   # 12,44,776,156 → y:44..200
 # 左サブゾーン: 日付・時刻(上) / 大きな現在気温 + 天気アイコン
 # 右サブゾーン: 黒パネル（湿度 + 体感温度）。参考PNGの風速/降水量mmは非表示。
-CURRENT_RIGHT_PANEL = (500, 56, 276, 132)             # 黒パネル 500,56 .. 776,188
+CURRENT_RIGHT_PANEL = (460, 62, 300, 100)             # 黒パネル 460,62 .. 760,162
 
 # --- 週間予報ゾーン（7カード） --------------------------------------------
 WEEKLY_TOP = 212

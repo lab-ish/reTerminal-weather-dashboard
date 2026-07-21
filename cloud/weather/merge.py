@@ -30,6 +30,7 @@ def merge(jma: dict[str, Any], precip: dict[str, Any]) -> WeatherData:
         humidity=int(round(float(cur["relative_humidity_2m"]))),
         weather_code=int(cur["weather_code"]),
         wind_speed=float(cur["wind_speed_10m"]),
+        precipitation=float(cur["precipitation"]),
     )
 
     jd = jma["daily"]
@@ -37,6 +38,7 @@ def merge(jma: dict[str, Any], precip: dict[str, Any]) -> WeatherData:
     codes = jd["weather_code"]
     tmax = jd["temperature_2m_max"]
     tmin = jd["temperature_2m_min"]
+    wind_speed_max = jd["wind_speed_10m_max"]
 
     # 降水確率を日付キーで引けるようにする
     pd = precip.get("daily", {})
@@ -53,6 +55,7 @@ def merge(jma: dict[str, Any], precip: dict[str, Any]) -> WeatherData:
                 weather_code=int(codes[i]),
                 temp_max=float(tmax[i]),
                 temp_min=float(tmin[i]),
+                wind_speed_max=float(wind_speed_max[i]),
                 precip_prob=None if pop is None else int(round(float(pop))),
             )
         )
