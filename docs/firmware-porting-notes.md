@@ -33,7 +33,7 @@ orange を含む7ニブルを持つ。実運用は6色（orange 0x4 未使用）
 | Green  | `0x6` | `#00FF00` |
 
 パック: 1バイト=2ピクセル（上位ニブル=左, 下位=右）。転送は `writeCommand(0x10)` にニブル列。
-→ `shared/layout_contract.md` / `cloud/render/palette.py` / `firmware/main/app_config.h` と一致。
+→ `shared/layout_contract.md` / `cloud/render/palette.py` / `firmware/components/board_cfg/include/app_config.h` と一致。
 
 ## 初期化・転送・リフレッシュ（すべて .cpp 内）
 

@@ -1,7 +1,7 @@
 # レイアウト契約書（クラウド ↔ デバイス）
 
 クラウド（`cloud/`）とファーム（`firmware/`）が共有する **唯一の契約**。値の変更は
-`cloud/config.py`・`cloud/render/palette.py` を編集し、本ファイルと `firmware/main/app_config.h`
+`cloud/config.py`・`cloud/render/palette.py` を編集し、本ファイルと `firmware/components/board_cfg/include/app_config.h`
 を同期させること。実行時はクラウドが `manifest.json` に埋めてデバイスへ配布するため、
 レイアウト変更でファームを焼き直す必要はない（app_config.h はフォールバック値）。
 
