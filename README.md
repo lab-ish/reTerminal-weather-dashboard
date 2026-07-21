@@ -102,3 +102,9 @@ manifest軽量パース) `epd_ed2208`(SPIドライバ) `framebuffer`(PSRAM 4bpp)
   生成画像にクレジット「Data: Open-Meteo (JMA / multi-model)」を描画している。
 - 背景画像: [Lorem Picsum](https://picsum.photos/)（実行毎にランダム取得）。
 - フォント: DejaVu Sans（再現性のためリポジトリに同梱）。
+
+## License
+
+This software is released under the BSD 3-clause license. See `LICENSE.txt`.
+
+* Copyright (c) 2026, Shigemi ISHIDA
