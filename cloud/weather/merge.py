@@ -30,6 +30,7 @@ def merge(jma: dict[str, Any], precip: dict[str, Any]) -> WeatherData:
         humidity=int(round(float(cur["relative_humidity_2m"]))),
         weather_code=int(cur["weather_code"]),
         wind_speed=float(cur["wind_speed_10m"]),
+        precipitation=float(cur["precipitation"]),
     )
 
     jd = jma["daily"]

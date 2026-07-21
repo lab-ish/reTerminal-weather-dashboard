@@ -82,19 +82,35 @@ def _draw_current(d: ImageDraw.ImageDraw, wd: WeatherData) -> None:
     _text(d, (x + 150 + tw + 12, y + 112), "(°C)",
           _reg(config.FS_LABEL), palette.C_BLACK)
 
-    # 右: 黒パネル（湿度 + 体感温度）。参考PNGの風速/降水量mmは非表示。
+    # 右: 黒パネル（湿度 + 体感温度、風速、降水量mm）
     px, py, pw, ph = config.CURRENT_RIGHT_PANEL
-    d.rounded_rectangle((px, py, px + pw, py + ph), radius=8, fill=palette.C_BLACK)
+    d.rounded_rectangle((px, py, px + pw, py + ph), radius=0, fill=palette.C_BLACK)
     # 湿度
-    _text(d, (px + pw / 2, py + 16), f"{cur.humidity:.0f}",
+    _text(d, (px + pw / 6, py + 8), f"{cur.humidity:.0f}",
           _bold(config.FS_PANEL_BIG), palette.C_WHITE, anchor="ma")
-    _text(d, (px + pw / 2, py + 58), "Humidity (%)",
+    _text(d, (px + pw / 6, py + 50), "Humidity",
+          _reg(config.FS_SMALL), palette.C_WHITE, anchor="ma")
+    _text(d, (px + pw / 6, py + 71), "(%)",
+          _reg(config.FS_SMALL), palette.C_WHITE, anchor="ma")
+    # 風速
+    _text(d, (px + pw / 2, py + 8), f"{cur.wind_speed:.1f}",
+          _bold(config.FS_PANEL_BIG), palette.C_WHITE, anchor="ma")
+    _text(d, (px + pw / 2, py + 50), "Wind Speed",
+          _reg(config.FS_SMALL), palette.C_WHITE, anchor="ma")
+    _text(d, (px + pw / 2, py + 71), "(m/s)",
+          _reg(config.FS_SMALL), palette.C_WHITE, anchor="ma")
+    # 降水量
+    _text(d, (px + pw * 5 / 6, py + 8), f"{cur.precipitation:.1f}",
+          _bold(config.FS_PANEL_BIG), palette.C_WHITE, anchor="ma")
+    _text(d, (px + pw * 5 / 6, py + 50), "Rain",
+          _reg(config.FS_SMALL), palette.C_WHITE, anchor="ma")
+    _text(d, (px + pw * 5 / 6, py + 71), "(mm)",
           _reg(config.FS_SMALL), palette.C_WHITE, anchor="ma")
     # 体感温度
-    _text(d, (px + pw / 2, py + 84), "Feels like",
-          _reg(config.FS_SMALL), palette.C_WHITE, anchor="ma")
-    _text(d, (px + pw / 2, py + 100), f"{cur.apparent_temperature:.1f} °C",
-          _bold(config.FS_PANEL_BIG), palette.C_WHITE, anchor="ma")
+    _text(d, (px + pw / 3 - 3, py + 110), "Feels like (°C)",
+          _reg(config.FS_SMALL), palette.C_BLACK, anchor="ma")
+    _text(d, (px + pw * 2 / 3 + 3, py + 100), f"{cur.apparent_temperature:.1f}",
+          _bold(config.FS_PANEL_BIG), palette.C_BLACK, anchor="ma")
 
 
 def _draw_weekly(d: ImageDraw.ImageDraw, wd: WeatherData) -> None:

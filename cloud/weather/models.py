@@ -14,7 +14,8 @@ class CurrentWeather:
     apparent_temperature: float  # 体感温度 [°C]
     humidity: int            # 相対湿度 [%]
     weather_code: int        # WMO weather code
-    wind_speed: float        # 風速 [m/s]（取得のみ・非表示）
+    wind_speed: float        # 風速 [m/s]
+    precipitation: float     # 降水量 [mm]
 
 
 @dataclass(frozen=True)
